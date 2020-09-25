@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,10 +13,11 @@ import green from "@material-ui/core/colors/green";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+// import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import "./loginStyles.css";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-
-
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,17 +39,17 @@ const useStyles = makeStyles((theme) => ({
   },
   textInput: {
     borderColor: "green !important",
-    text : 'green'
+    text: "green",
   },
   floatingLabelFocusStyle: {
-    color: "green"
-}
+    color: "green",
+  },
 }));
 
 const themeStyles = createMuiTheme({
-    palette:{
-        primary:green
-    },
+  palette: {
+    primary: green,
+  },
   overrides: {
     // Style sheet name ⚛️
     MuiButton: {
@@ -61,16 +62,45 @@ const themeStyles = createMuiTheme({
         color: "white",
         height: 48,
         padding: "0 30px",
-        marginTop:"7px",
+        marginTop: "7px",
       },
     },
-  
   },
 });
 
-export default function SignIn() {
+export default function LogIn() {
+  let history = useHistory();
   const classes = useStyles();
-  const preventDefault = (event) => event.preventDefault();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const submit = (e) => {
+    e.preventDefault();
+    console.log(email, "email value");
+    console.log(password, "passwrd value");
+    axios
+      .post("http://127.0.0.1:3333/taskmanagement/api/auth/login", {
+        email,
+        password,
+      })
+      // axios.post('http://jsonplaceholder.typicode.com/users', {email,password})
+      .then((res) => {
+        console.log(res, "here is the respone");
+        console.log(res.data, "respone.data");
+        if (res.data.message === "success") {
+          console.log("login sucess");
+          alert("login sucess");
+          history.push("/projects");
+        } else if (res.data.message === "failure") {
+          console.log("login fail");
+          alert("login fail");
+        } else {
+          console.log("doesnt exist");
+          alert("doesnt exist");
+          history.push("/projects");
+        }
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -83,7 +113,8 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          {/* <ValidatorForm> */}
+          <form className={classes.form} noValidate onSubmit={submit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -92,7 +123,13 @@ export default function SignIn() {
               id="email"
               label="Email Address"
               name="email"
+              value={email}
               autoComplete="email"
+              validators={["required", "isEmail"]}
+              errorMessages={["this field is required", "email is not valid"]}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               autoFocus
               InputProps={{
                 classes: {
@@ -101,7 +138,7 @@ export default function SignIn() {
               }}
               InputLabelProps={{
                 className: classes.floatingLabelFocusStyle,
-            }}
+              }}
             />
             <TextField
               variant="outlined"
@@ -112,7 +149,11 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
+              value={password}
               autoComplete="current-password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
               InputProps={{
                 classes: {
                   notchedOutline: classes.textInput,
@@ -120,24 +161,22 @@ export default function SignIn() {
               }}
               InputLabelProps={{
                 className: classes.floatingLabelFocusStyle,
-            }}
+              }}
             />
-          
 
-            <Button type="submit" fullWidth>
+            <Button type="submit" fullWidth onClick={submit}>
               Sign In
             </Button>
             <Grid container>
-            <Grid item xs>
-              <Link href="#" to={"/forgotpassword/${id}"} color="primary" onClick={preventDefault}>
-                Forgot password?
-              </Link>
+              <Grid item xs>
+                <Link href="#" to={"/forgotpassword/${id}"} color="primary">
+                  Forgot password?
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-
-     
+          </form>
+          {/* </ValidatorForm> */}
+        </div>
       </ThemeProvider>
     </Container>
   );
