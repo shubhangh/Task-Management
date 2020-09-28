@@ -83,7 +83,6 @@ export default function LogIn() {
         email,
         password,
       })
-      // axios.post('http://jsonplaceholder.typicode.com/users', {email,password})
       .then((res) => {
         console.log(res, "here is the respone");
         console.log(res.data, "respone.data");
@@ -97,7 +96,6 @@ export default function LogIn() {
         } else {
           console.log("doesnt exist");
           alert("doesnt exist");
-          history.push("/projects");
         }
       });
   };

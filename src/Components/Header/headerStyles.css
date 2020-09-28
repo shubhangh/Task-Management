@@ -2,26 +2,30 @@
   font-family: "Oswald", Arial, sans-serif;
   background-color: #026746;
   display: block;
-  height: 55px;
+  height: 88px;
 }
 
 .logo {
   height: 70px;
   float: left;
-  margin-top: 11px;
+  margin-top: 8px;
   margin-left: 10px;
 }
 
 .title {
-  padding-top:  8px;
+  padding-top: 8px;
   margin-top: 0;
   color: #ffffff;
+  font-family: "Oswald", Arial, sans-serif;
   text-transform: uppercase;
+    /* margin: 13px 5px 15px 20px;
+    float: left; */
+    font-weight: bold;
+    padding-top: 20px;
 }
 
 .menuIcon {
   float: right;
   margin-top: 0;
   height: 25px;
-
 }
