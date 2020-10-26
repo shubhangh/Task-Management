@@ -3,8 +3,8 @@ import "./App.css";
 import Header from "./Components/Header/header";
 import LogIn from "./Components/Login/login";
 import Projects from "./Components/Projects/projects";
-import NavMenu from "./Components/NavMenu/navMenu";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+// import NavMenu from "./Components/NavMenu/navMenu";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 function App() {
   return (
